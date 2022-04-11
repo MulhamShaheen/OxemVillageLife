@@ -1,11 +1,13 @@
 <?php
-
+require "classes/Animal.php";
 require "classes/Cow.php";
 require "classes/Chicken.php";
-//require "classes/Draft_Farm.php";
 
+//require "classes/Draft_Farm.php";
+use Village\Animal;
 use Village\Cow;
 use Village\Chicken;
+
 //use Village\Farm;
 
 
@@ -43,7 +45,7 @@ $randomNames = [
 
 //$farm = new Farm('my barn');
 
-$farm = new class{
+$farm = new class('My Farm'){
 
     public string $name;
     public $animals;
@@ -59,10 +61,10 @@ $farm = new class{
 
         if(!empty($this->animals)){
             $lastAnimal = end($this->animals);
-            $lastId = $lastAnimal->getId();
+            $lastId = $lastAnimal->id;
         }
 
-        $animal->setId($lastId + 1);
+        $animal->id = $lastId + 1;
         $this->animals[] = $animal;
     }
 
@@ -112,4 +114,4 @@ $farm->addAnimal(  new Cow( $randomNames[array_rand($randomNames)],random_int(8,
 
 print_r($farm->getHeadCount());
 print_r($farm->oneWeekProduct());
-//print_r($farm->animals);
+
