@@ -15,21 +15,22 @@ class Chicken extends Animal
 
     }
 
-    public function produce(){
+    public function produce() : int
+    {
         return (random_int($this->avProduction - 0.5 ,$this->avProduction + 0.5));
     }
 
-    public function getInfo()
+    public function getInfo(): string
     {
-        return "Chicken №". $this->getId() ." : name: ". $this->name;
+        return "Chicken №". $this->id ." : name: ". $this->name;
     }
 
-    public function getType()
+    public function getType() : string
     {
         return "Chicken";
     }
 
-    public function getProduct()
+    public function getProduct() : string
     {
         return "Eggs";
     }

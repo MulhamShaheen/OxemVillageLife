@@ -4,33 +4,17 @@ namespace Village;
 
 abstract class Animal
 {
-    public $id;
+    public int $id;
     public string $name;
 
     public function __construct($name)
     {
-        $this->setId(0); // животное без Barn умеет нулевой номер
+        $this->id = 0; // животное без Barn умеет нулевой номер
         $this->name = $name;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    abstract protected function produce();
-    abstract protected function getInfo();
-    abstract protected function getType();
-    abstract protected function getProduct();
+    abstract protected function produce(); //делать продукт
+    abstract protected function getInfo(); //поулчить инфу о животном
+    abstract protected function getType(); //поулчить тип животного
+    abstract protected function getProduct(); //поулчить тип продукта животного
 }

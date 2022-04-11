@@ -14,21 +14,22 @@ class Cow extends Animal
 
     }
 
-    public function produce(){
+    public function produce() : int
+    {
         return random_int($this->avProduction - 2 ,$this->avProduction +2);
     }
 
-    public function getInfo()
+    public function getInfo() : string
     {
-        return "Cow №". $this->getId() ." : name: ". $this->name;
+        return "Cow №". $this->id ." : name: ". $this->name;
     }
 
-    public function getType()
+    public function getType() : string
     {
         return "Cow";
     }
 
-    public function getProduct()
+    public function getProduct() : string
     {
         return "Liters of milk";
     }
