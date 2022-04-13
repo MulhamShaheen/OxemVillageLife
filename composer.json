@@ -1,0 +1,10 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Village\\": "village/"
+        }
+    },
+    "require": {
+        "ramsey/uuid": "^4.3"
+    }
+}
