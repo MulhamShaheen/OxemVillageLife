@@ -1,14 +1,6 @@
 <?php
-require "classes/Animal.php";
-require "classes/Cow.php";
-require "classes/Chicken.php";
 
-//require "classes/Draft_Farm.php";
-use Village\Animal;
-use Village\Cow;
-use Village\Chicken;
-
-//use Village\Farm;
+require_once __DIR__ . "/vendor/autoload.php";
 
 
 $randomNames = [
@@ -41,25 +33,27 @@ $randomNames = [
     'Randy',
     'Margarete',
     'Margarett',
-    ]; // не нужная фишка
+]; // не нужная фишка
 
 //$farm = new Farm('my barn');
 
-$farm = new class('My Farm'){
+$farm = new class('My Farm') {
 
     public string $name;
     public $animals;
 
-    public function __construct($name,$animals = []){
+    public function __construct($name, $animals = [])
+    {
         $this->name = $name;
         $this->animals = $animals;
     }
 
-    public function addAnimal($animal){
+    public function addAnimal(\Village\Animal $animal)
+    {
 
         $lastId = 0;
 
-        if(!empty($this->animals)){
+        if (!empty($this->animals)) {
             $lastAnimal = end($this->animals);
             $lastId = $lastAnimal->id;
         }
@@ -68,24 +62,35 @@ $farm = new class('My Farm'){
         $this->animals[] = $animal;
     }
 
-    public function getHeadCount(){
-        $temp = [];
-        foreach ($this->animals as $animal){
-            $temp[$animal->getType()][] = $animal;
+    public function getHeadCount()
+    {
+        $count = [];
+        foreach ($this->animals as $animal) {
+            if (!isset($count[$animal->getType()]))
+                $count[$animal->getType()] = 1;
+            else {
+                $count[$animal->getType()]++;
+            }
         }
-        foreach ($temp as $type=>$item){
-            $count[$type] = sizeof($temp[$type]);
+        $output = "";
+        foreach ($count as $type => $value) {
+            if ($value > 1) $output .= $value . " " . $type . "s" . PHP_EOL;
+            else
+                $output .= $value . " " . $type . PHP_EOL;
+
         }
+        echo $output;
         return $count;
     }
 
-    public function oneWeekProduct(){
+    public function gatherProducts(int $dayCount = 1): array
+    {
         $products = [];
-        for ($i=0;$i<7;$i++){
-            foreach ($this->animals as $animal){
-                if(!isset($products[$animal->getProduct()]))
+        for ($i = 0; $i < $dayCount; $i++) {
+            foreach ($this->animals as $animal) {
+                if (!isset($products[$animal->getProduct()]))
                     $products[$animal->getProduct()] = $animal->produce();
-                else{
+                else {
                     $products[$animal->getProduct()] += $animal->produce();
                 }
             }
@@ -96,22 +101,22 @@ $farm = new class('My Farm'){
 
 };
 
-for($i = 0; $i < 10; $i++){
-    $farm->addAnimal( new Cow( $randomNames[array_rand($randomNames)],random_int(8,11))); // случайные производимость и имя
+for ($i = 0; $i < 10; $i++) {
+    $farm->addAnimal(new Village\Cow($randomNames[array_rand($randomNames)], random_int(8, 11))); // случайные производимость и имя
 }
-for($i = 0; $i < 20; $i++){
-    $farm->addAnimal( new Chicken( $randomNames[array_rand($randomNames)],random_int(1,3))); // случайные производимость и имя
-}
-
-print_r($farm->getHeadCount());
-print_r($farm->oneWeekProduct());
-
-for($i = 0; $i < 5; $i++){
-    $farm->addAnimal( new Chicken( $randomNames[array_rand($randomNames)],random_int(1,3)));
+for ($i = 0; $i < 20; $i++) {
+    $farm->addAnimal(new Village\Chicken($randomNames[array_rand($randomNames)], random_int(1, 3))); // случайные производимость и имя
 }
 
-$farm->addAnimal(  new Cow( $randomNames[array_rand($randomNames)],random_int(8,11)));
+$farm->getHeadCount();
+print_r($farm->gatherProducts());
 
-print_r($farm->getHeadCount());
-print_r($farm->oneWeekProduct());
+for ($i = 0; $i < 5; $i++) {
+    $farm->addAnimal(new Village\Chicken($randomNames[array_rand($randomNames)], random_int(1, 3)));
+}
+
+$farm->addAnimal(new Village\Cow($randomNames[array_rand($randomNames)], random_int(8, 11)));
+
+$farm->getHeadCount();
+print_r($farm->gatherProducts());
 
