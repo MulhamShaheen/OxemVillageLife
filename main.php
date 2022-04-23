@@ -116,6 +116,6 @@ for ($i = 0; $i < 5; $i++) {
 
 $farm->addAnimal(new Village\Cow($randomNames[array_rand($randomNames)], random_int(8, 11)));
 
-$farm->getHeadCount();
+$farm->printOutHeadCount();
 print_r($farm->gatherProducts());
 
