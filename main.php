@@ -38,31 +38,25 @@ $randomNames = [
 //$farm = new Farm('my barn');
 
 $farm = new class('My Farm') {
+    protected int $lastId = 1;
 
     public string $name;
-    public $animals;
 
-    public function __construct($name, $animals = [])
+    public function __construct($name)
     {
         $this->name = $name;
-        $this->animals = $animals;
     }
 
     public function addAnimal(\Village\Animal $animal)
     {
 
-        $lastId = 0;
-
-        if (!empty($this->animals)) {
-            $lastAnimal = end($this->animals);
-            $lastId = $lastAnimal->id;
-        }
-
-        $animal->id = $lastId + 1;
+        $animal->id = $this->lastId;
         $this->animals[] = $animal;
+
+        $this->lastId++;
     }
 
-    public function getHeadCount()
+    public function getHeadCount(): array
     {
         $count = [];
         foreach ($this->animals as $animal) {
@@ -72,7 +66,13 @@ $farm = new class('My Farm') {
                 $count[$animal->getType()]++;
             }
         }
+        return $count;
+    }
+    public function printOutHeadCount()
+    {
+        $count = $this->getHeadCount();
         $output = "";
+
         foreach ($count as $type => $value) {
             if ($value > 1) $output .= $value . " " . $type . "s" . PHP_EOL;
             else
@@ -80,7 +80,6 @@ $farm = new class('My Farm') {
 
         }
         echo $output;
-        return $count;
     }
 
     public function gatherProducts(int $dayCount = 1): array

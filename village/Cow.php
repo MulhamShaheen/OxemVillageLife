@@ -5,11 +5,10 @@ namespace Village;
 class Cow extends Animal
 {
 
-    public function __construct($name,$avProduction = 10)
+    public function __construct($name)
     {
         parent::__construct($name);
 
-        $this->avProduction = $avProduction;
 
     }
 
